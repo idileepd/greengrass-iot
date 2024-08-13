@@ -1,0 +1,30 @@
+{
+  "name": "sls-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline",
+    "deploy": "serverless deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/aws-iot-device-sdk": "^2.2.8",
+    "@types/aws-lambda": "^8.10.143",
+    "@types/node": "^22.1.0",
+    "@types/uuid": "^10.0.0",
+    "serverless-plugin-typescript": "^2.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-iot-data-plane": "^3.624.0",
+    "aws-iot-device-sdk": "^2.2.15",
+    "aws-iot-device-sdk-v2": "^1.20.0",
+    "serverless": "^3.39.0-de62c71e",
+    "uuid": "^10.0.0"
+  }
+}

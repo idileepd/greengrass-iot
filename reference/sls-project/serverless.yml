@@ -1,0 +1,41 @@
+service: mqtt-gateway
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - iot:*
+            # - iot:Receive
+            # - iot:Subscribe
+          Resource:
+            # - arn:aws:iot:${self:provider.region}:${aws:accountId}:topic/ping/*
+            - "*"
+        # - Effect: Allow
+        #   Action:
+        #     - ssm:GetParameter
+        #   Resource:
+        #     - arn:aws:ssm:${self:provider.region}:${aws:accountId}:parameter/iot/endpoint
+  environment:
+    # IOT_ENDPOINT: ${ssm:/iot/endpoint}
+    IOT_ENDPOINT: a1n6c91059fv18-ats.iot.us-east-1.amazonaws.com
+
+plugins:
+  - serverless-plugin-typescript
+
+functions:
+  hello:
+    handler: src/handlers/sub.handler
+    events:
+      - http:
+          path: hello
+          method: GET
+
+custom:
+  serverlessPluginTypescript:
+    tsConfigFileLocation: "./tsconfig.json"

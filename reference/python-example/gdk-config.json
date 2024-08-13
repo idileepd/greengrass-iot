@@ -1,0 +1,19 @@
+{
+  "component": {
+    "com.example.PythonHelloWorld": {
+      "author": "Dileep Nagendra",
+      "version": "1.0.0",
+      "build": {
+        "build_system": "zip",
+        "options": {
+          "zip_name": ""
+        }
+      },
+      "publish": {
+        "bucket": "greengrass-components",
+        "region": "us-east-1"
+      }
+    }
+  },
+  "gdk_version": "1.3.0"
+}

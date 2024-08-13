@@ -1,0 +1,65 @@
+---
+RecipeFormatVersion: "2020-01-25"
+ComponentName: "{COMPONENT_NAME}"
+ComponentVersion: "{COMPONENT_VERSION}"
+ComponentDescription: "my-device-controller - reads device and publish to iot core and accepts commands and executes"
+ComponentPublisher: "{COMPONENT_AUTHOR}"
+ComponentConfiguration:
+  DefaultConfiguration:
+    deviceId: "device_id"
+    devicePort: "device_port"
+    enableHeartbeat: "True"
+    accessControl:
+      aws.greengrass.ipc.mqttproxy:
+        com.carrier.my-device-controller:mqttproxy:1:
+          policyDescription: "Allows access to publish to all topics."
+          operations:
+            - aws.greengrass#PublishToIoTCore
+            - aws.greengrass#SubscribeToIoTCore
+          resources:
+            - "*"
+Manifests:
+  - Platform:
+      os: all
+    Artifacts:
+      - URI: "s3://BUCKET_NAME/COMPONENT_NAME/COMPONENT_VERSION/my-device-controller.zip"
+        Unarchive: ZIP
+Lifecycle:
+  Install: |
+    echo "\n\n\nLifecycle---INSTALL"
+    # Fetch the current username
+    USERNAME=$(whoami)
+    echo ":::Current username: $USERNAME"
+
+    # Create the virtual environment in the user's home directory
+    ENV_DIR="/home/$USERNAME/.local/.greengrass-env"
+    if [ ! -d "$ENV_DIR" ]; then
+      echo ":::Creating virtual environment at $ENV_DIR"
+      python3 -m venv "$ENV_DIR"
+    else
+      echo ":::Virtual environment already exists at $ENV_DIR skipping"
+    fi
+
+    # Upgrade pip and install dependencies
+    echo ":::Upgrading pip in the virtual environment"
+    "$ENV_DIR/bin/pip" install --upgrade pip
+
+    echo "Installing dependencies from requirements.txt"
+    "$ENV_DIR/bin/pip" install -r {artifacts:decompressedPath}/my-device-controller/requirements.txt
+
+  Run: |
+    echo "\n\n\nLifecycle---RUN"
+    # Fetch the current username
+    USERNAME=$(whoami)
+    echo ":::Current username: $USERNAME"
+
+    # Activate the virtual environment and run the script
+    ENV_DIR="/home/$USERNAME/.local/.greengrass-env"
+    echo ":::Activating virtual environment from $ENV_DIR"
+    source "$ENV_DIR/bin/activate"
+
+    # For the imports fix
+    export PYTHONPATH=.
+
+    echo ":::Running main.py script"
+    "$ENV_DIR/bin/python3" -u {artifacts:decompressedPath}/my-device-controller/main.py "{configuration:/deviceId}" "{configuration:/devicePort}" "{configuration:/enableHeartbeat}"

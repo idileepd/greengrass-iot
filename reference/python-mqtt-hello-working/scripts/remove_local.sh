@@ -1,0 +1,1 @@
+sudo /greengrass/v2/bin/greengrass-cli deployment create --remove "com.example.PythonMqttHello"
