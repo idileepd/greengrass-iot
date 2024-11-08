@@ -13,7 +13,7 @@ USERNAME=$(whoami)
 echo "Current username: $USERNAME"
 
 # Define the virtual environment directory
-ENV_DIR="/home/$USERNAME/.local/.greengrass-env"
+ENV_DIR="/home/ggc_user/.local/.greengrass-env"
 
 # Create the virtual environment if it doesn't exist
 if [ ! -d "$ENV_DIR" ]; then
