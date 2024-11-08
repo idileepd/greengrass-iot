@@ -2,7 +2,7 @@
   "component": {
     "com.example.PythonMqttHello": {
       "author": "Dileep",
-      "version": "1.0.0",
+      "version": "1.0.3",
       "build": {
         "build_system": "zip"
       },
